@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="me">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mondo Kumbor | Meni</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sand: #F5EFE3;
+    --cream: #FAF6EE;
+    --sea: #2A6B7C;
+    --sea-dark: #1A4A56;
+    --sea-light: #4A9BAC;
+    --gold: #C6973A;
+    --gold-light: #E8C57A;
+    --terracotta: #B85C38;
+    --text: #2C2416;
+    --text-muted: #6B5A44;
+    --border: rgba(44,36,22,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(250,246,238,0.92);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 var(--border);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--sea-dark);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--sea); }
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .nav-hamburger span {
+    width: 24px; height: 1.5px;
+    background: var(--text);
+    display: block;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #E8F4F8 0%, var(--cream) 55%, #F0E8D4 100%);
+  }
+  .hero-wave {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+  }
+  .hero-ornament {
+    width: 60px; height: 1px;
+    background: var(--gold);
+    margin: 0 auto 2.5rem;
+    position: relative;
+  }
+  .hero-ornament::before, .hero-ornament::after {
+    content: '';
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .hero-ornament::before { left: -10px; }
+  .hero-ornament::after { right: -10px; }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sea);
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 8vw, 7rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--sea-dark);
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.45s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-desc {
+    margin-top: 1.8rem;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    max-width: 500px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.65s forwards;
+  }
+  .hero-scroll {
+    margin-top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.9s forwards;
+  }
+  .hero-scroll span {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%; left: 0;
+    width: 100%; height: 100%;
+    background: var(--cream);
+    animation: scrollAnim 1.5s 1.2s ease-in-out infinite;
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 6rem 0; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .section-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sea);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    color: var(--sea-dark);
+    line-height: 1.15;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-divider {
+    width: 50px; height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto 0;
+  }
+
+  /* ── MENU TABS ── */
+  .menu-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.25s;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 2px;
+    background: var(--sea);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  .tab-btn.active { color: var(--sea); }
+  .tab-btn.active::after { transform: scaleX(1); }
+  .tab-btn:hover { color: var(--sea); }
+
+  /* ── MENU PANELS ── */
+  .menu-panel { display: none; }
+  .menu-panel.active { display: block; animation: fadeIn 0.4s ease; }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .menu-item {
+    background: var(--cream);
+    padding: 1.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .menu-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+  }
+  .menu-item:hover { background: #F0EAD8; }
+  .menu-item:hover::before { transform: scaleY(1); }
+  .item-info { flex: 1; }
+  .item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--sea-dark);
+    margin-bottom: 0.4rem;
+    line-height: 1.2;
+  }
+  .item-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+  .item-tags {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid;
+    border-radius: 100px;
+  }
+  .tag-sea { border-color: var(--sea-light); color: var(--sea); }
+  .tag-gold { border-color: var(--gold); color: var(--gold); }
+  .tag-terra { border-color: var(--terracotta); color: var(--terracotta); }
+  .item-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--gold);
+    white-space: nowrap;
+    padding-top: 0.15rem;
+  }
+
+  /* ── SUBCATEGORY TITLE ── */
+  .subcategory {
+    grid-column: 1 / -1;
+    background: var(--sea-dark);
+    color: var(--gold-light);
+    padding: 1rem 2rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* ── SPECIALS SECTION ── */
+  .specials-bg { background: var(--sea-dark); }
+  .specials-bg .section-title { color: var(--gold-light); }
+  .specials-bg .section-eyebrow { color: var(--sea-light); }
+  .specials-bg .section-divider { background: var(--gold-light); }
+
+  .specials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .special-card {
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 2rem 1.8rem;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .special-card:hover {
+    border-color: var(--gold-light);
+    transform: translateY(-4px);
+  }
+  .special-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: rgba(198,151,58,0.2);
+    position: absolute;
+    top: 0.5rem; right: 1.2rem;
+    line-height: 1;
+  }
+  .special-emoji {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .special-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0.6rem;
+  }
+  .special-desc {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.65;
+  }
+  .special-price {
+    margin-top: 1.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--gold-light);
+  }
+
+  /* ── ABOUT STRIP ── */
+  .about-strip {
+    background: var(--sand);
+    padding: 5rem 0;
+  }
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .about-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    color: var(--sea-dark);
+    line-height: 1.2;
+    margin-bottom: 1.2rem;
+  }
+  .about-text h2 em { font-style: italic; color: var(--gold); }
+  .about-text p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .stat {
+    border-top: 1px solid var(--gold);
+    padding-top: 1rem;
+  }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--sea-dark);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-visual-box {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, var(--sea) 0%, var(--sea-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-visual-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 30px,
+      rgba(255,255,255,0.03) 30px,
+      rgba(255,255,255,0.03) 31px
+    );
+  }
+  .about-visual-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.12);
+    line-height: 1;
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+  }
+  .about-float-card {
+    position: absolute;
+    bottom: -1.5rem; left: -1.5rem;
+    background: var(--gold);
+    padding: 1.5rem 2rem;
+    color: var(--sea-dark);
+  }
+  .about-float-card strong {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+  .about-float-card span {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* ── WINES ── */
+  .wines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+  }
+  .wine-card {
+    border: 1px solid var(--border);
+    padding: 2rem 1.8rem;
+    transition: border-color 0.3s, transform 0.3s;
+    background: var(--cream);
+  }
+  .wine-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+  .wine-icon { font-size: 2rem; margin-bottom: 1.2rem; display: block; }
+  .wine-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--sea-dark);
+    margin-bottom: 0.3rem;
+  }
+  .wine-origin {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sea);
+    margin-bottom: 0.8rem;
+  }
+  .wine-desc {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+  .wine-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+  .wine-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+  }
+  .wine-vol {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── CONTACT ── */
+  .contact-bg { background: var(--sea-dark); }
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .contact-info h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 2rem;
+  }
+  .contact-info h2 em { font-style: italic; color: var(--gold-light); }
+  .contact-detail {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .contact-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sea-light);
+    margin-bottom: 0.4rem;
+  }
+  .contact-value {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+  .contact-form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 1.5rem;
+  }
+  .form-field {
+    margin-bottom: 1.2rem;
+  }
+  .form-field label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.5rem;
+  }
+  .form-field input, .form-field textarea, .form-field select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder {
+    color: rgba(255,255,255,0.25);
+  }
+  .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+    border-color: var(--gold);
+  }
+  .form-field textarea { resize: vertical; min-height: 100px; }
+  .form-field select option { background: var(--sea-dark); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .btn-reserve {
+    width: 100%;
+    padding: 1rem;
+    background: var(--gold);
+    border: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sea-dark);
+    cursor: pointer;
+    transition: background 0.25s, transform 0.2s;
+    margin-top: 0.5rem;
+  }
+  .btn-reserve:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-reserve:active { transform: translateY(0); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0F2D36;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .footer-logo span { color: var(--gold-light); }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .footer-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold-light); }
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scrollAnim {
+    0%   { top: -100%; }
+    100% { top: 100%; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── MOBILE MENU ── */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--sea-dark);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-close {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    background: none; border: none;
+    font-size: 1.8rem;
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .about-visual { display: none; }
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .tab-btn { padding: 0.7rem 1rem; font-size: 0.7rem; }
+    section { padding: 4rem 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Mondo <span>Kumbor</span></a>
+  <ul class="nav-links">
+    <li><a href="#meni">Meni</a></li>
+    <li><a href="#specijali">Specijali</a></li>
+    <li><a href="#vina">Vina</a></li>
+    <li><a href="#o-nama">O nama</a></li>
+    <li><a href="#kontakt">Rezervacija</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Otvori meni">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#meni" class="mobile-link">Meni</a>
+  <a href="#specijali" class="mobile-link">Specijali</a>
+  <a href="#vina" class="mobile-link">Vina</a>
+  <a href="#o-nama" class="mobile-link">O nama</a>
+  <a href="#kontakt" class="mobile-link">Rezervacija</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-ornament"></div>
+  <p class="hero-eyebrow">Kumbor · Herceg Novi · Crna Gora</p>
+  <h1>Ukus<br><em>Jadrana</em></h1>
+  <p class="hero-desc">Svježe ulovljena riba, domaće povće i maslinovo ulje s obale — autentična mediteranska kuhinja direktno uz more.</p>
+  <div class="hero-scroll">
+    <span>Istraži meni</span>
+    <div class="scroll-line"></div>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#FAF6EE"/>
+  </svg>
+</section>
+
+<!-- MENI -->
+<section id="meni">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Naša ponuda</span>
+      <h2 class="section-title">Jelovnik</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="menu-tabs reveal">
+      <button class="tab-btn active" data-tab="morski">🐟 Morski plodovi</button>
+      <button class="tab-btn" data-tab="meso">🥩 Meso</button>
+      <button class="tab-btn" data-tab="predjela">🫒 Predjela</button>
+      <button class="tab-btn" data-tab="dezert">🍮 Deserti</button>
+    </div>
+
+    <!-- MORSKI PLODOVI -->
+    <div class="menu-panel active" id="tab-morski">
+      <div class="menu-grid">
+        <div class="subcategory">Ribe</div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Brancin na žaru</p>
+            <p class="item-desc">Svježi brancin pečen na maslinovom ulju s ružmarinom i morskim solju, poslužen s blitvom i pečenim krompirima.</p>
+            <div class="item-tags"><span class="tag tag-sea">Svježe</span><span class="tag tag-gold">Preporučujemo</span></div>
+          </div>
+          <span class="item-price">24 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Zubatac na lešo</p>
+            <p class="item-desc">Kuhani zubatac s bijelim vinom, kapulom i limunom. Poslužen s kuhanim povrćem i maslinovim uljem.</p>
+            <div class="item-tags"><span class="tag tag-sea">Svježe</span></div>
+          </div>
+          <span class="item-price">28 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Grilled losos</p>
+            <p class="item-desc">Norveški losos grilovan sa špinatom, cherry paradajzom i kremastim sosom od limuna i kapara.</p>
+            <div class="item-tags"><span class="tag tag-gold">Novo</span></div>
+          </div>
+          <span class="item-price">22 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Dorada u soli</p>
+            <p class="item-desc">Čitava dorada pečena u morskoj soli — jednostavna tehnika koja zadržava sve arome svježeg mesa.</p>
+            <div class="item-tags"><span class="tag tag-sea">Svježe</span><span class="tag tag-gold">Preporučujemo</span></div>
+          </div>
+          <span class="item-price">26 €</span>
+        </div>
+
+        <div class="subcategory">Plodovi mora</div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Crni rižoto s lignjama</p>
+            <p class="item-desc">Rižoto bojen crnilom od lignji, bogat okus mora uz bijelo vino i parmezan.</p>
+            <div class="item-tags"><span class="tag tag-terra">Vegetarijansko</span></div>
+          </div>
+          <span class="item-price">18 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Škampi na buzaru</p>
+            <p class="item-desc">Svježi škampi dinstani u sosu od belog vina, maslinovog ulja, bijelog luka i sitnog kruha.</p>
+            <div class="item-tags"><span class="tag tag-gold">Preporučujemo</span></div>
+          </div>
+          <span class="item-price">20 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Hobotnica sa šumskim gljivama</p>
+            <p class="item-desc">Mekana kuvana hobotnica sa šumskim gljivama, kapulom i limunovim sosom.</p>
+          </div>
+          <span class="item-price">22 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Miješani morski plodovi</p>
+            <p class="item-desc">Lignje, škampi, dagnje i kapice sa sosom od bijelog vina i svježim začinskim biljem.</p>
+            <div class="item-tags"><span class="tag tag-gold">Za dvoje</span></div>
+          </div>
+          <span class="item-price">32 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MESO -->
+    <div class="menu-panel" id="tab-meso">
+      <div class="menu-grid">
+        <div class="subcategory">Sa roštilja</div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Teleći kotlet</p>
+            <p class="item-desc">Juneći kotlet s kostima, grilovan na drvenom uglju, poslužen s pečenim povrćem i rozmarinovim uljem.</p>
+            <div class="item-tags"><span class="tag tag-gold">Preporučujemo</span></div>
+          </div>
+          <span class="item-price">22 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Janjeće pečenje</p>
+            <p class="item-desc">Slow-roasted janjetina s biberom, origanom i pečenim krompirima. Crnogorska klasika.</p>
+            <div class="item-tags"><span class="tag tag-sea">Tradicija</span></div>
+          </div>
+          <span class="item-price">20 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Mješano meso s roštilja</p>
+            <p class="item-desc">Ćevapi, pileće bijelo i teletina s roštilja, uz ajvar i luk.</p>
+          </div>
+          <span class="item-price">18 €</span>
+        </div>
+
+        <div class="subcategory">Iz tave</div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Pileće grudi s pečurkama</p>
+            <p class="item-desc">Sočno pileće bijelo meso sa šumskim gljivama, svježim začinima i kremastim sosom.</p>
+          </div>
+          <span class="item-price">16 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Svinjski file</p>
+            <p class="item-desc">Nježni svinjski file sa senfom i medom, pečen u tavi, poslužen s pireom od batata.</p>
+          </div>
+          <span class="item-price">17 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREDJELA -->
+    <div class="menu-panel" id="tab-predjela">
+      <div class="menu-grid">
+        <div class="subcategory">Hladna predjela</div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Pršuta i sir</p>
+            <p class="item-desc">Domaća pršuta iz Njeguša sa starim Travničkim sirom, maslinama i sušenim paradajzom.</p>
+            <div class="item-tags"><span class="tag tag-sea">Domaće</span></div>
+          </div>
+          <span class="item-price">12 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Carpaccio od brancina</p>
+            <p class="item-desc">Tanko narezani sirovi brancin s limunovim dresingom, kaparima i svježim začinskim biljem.</p>
+            <div class="item-tags"><span class="tag tag-gold">Preporučujemo</span></div>
+          </div>
+          <span class="item-price">14 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Crnogorska salata</p>
+            <p class="item-desc">Paradajz, krastavac, paprika, kapula, feta sir i masline. Dresing od maslinovog ulja i octa.</p>
+            <div class="item-tags"><span class="tag tag-terra">Vegetarijansko</span></div>
+          </div>
+          <span class="item-price">8 €</span>
+        </div>
+
+        <div class="subcategory">Topla predjela</div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Dagnje na buzaru</p>
+            <p class="item-desc">Svježe dagnje s Bokokotorskog zaliva dinstane u bijelom vinu s česnom i peršunom.</p>
+            <div class="item-tags"><span class="tag tag-sea">Lokalno</span></div>
+          </div>
+          <span class="item-price">11 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Pržene lignje</p>
+            <p class="item-desc">Hrskave lignje u hrpi blitvom i sosom od aioli-a. Savršen start za večeru.</p>
+          </div>
+          <span class="item-price">13 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Bruschetta s paradajzom</p>
+            <p class="item-desc">Hrskavi hljeb s mariniranim cherry paradajzom, bosiljkom i prelijepim maslinovim uljem.</p>
+            <div class="item-tags"><span class="tag tag-terra">Vegetarijansko</span></div>
+          </div>
+          <span class="item-price">7 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEZERT -->
+    <div class="menu-panel" id="tab-dezert">
+      <div class="menu-grid">
+        <div class="subcategory">Slatka završnica</div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Panna cotta s borovnicama</p>
+            <p class="item-desc">Kremasta panna cotta s posluživanjem svježih borovnica i limunovog karamelaiziranog šećera.</p>
+          </div>
+          <span class="item-price">7 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Tiramisu</p>
+            <p class="item-desc">Klasični talijanski desert s espresso natopljenim savoiardi keksima i kremom od mascarpone sira.</p>
+            <div class="item-tags"><span class="tag tag-gold">Favorit</span></div>
+          </div>
+          <span class="item-price">7 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Palačinke s Nutellom</p>
+            <p class="item-desc">Mekane palačinke punjene Nutellom i svježom jagodom, posute šećerom u prahu.</p>
+          </div>
+          <span class="item-price">6 €</span>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-info">
+            <p class="item-name">Torta od narandže</p>
+            <p class="item-desc">Vlažna torta od svježe narandže s kremom od bijele čokolade i glazurom od narandže.</p>
+            <div class="item-tags"><span class="tag tag-sea">Domaće</span></div>
+          </div>
+          <span class="item-price">8 €</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIJALI -->
+<section class="specials-bg" id="specijali">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow" style="color: var(--sea-light)">Dnevna preporuka</span>
+      <h2 class="section-title">Specijaliteti <em>šefa kuhinje</em></h2>
+      <div class="section-divider" style="background: var(--gold-light)"></div>
+    </div>
+
+    <div class="specials-grid">
+      <div class="special-card reveal">
+        <span class="special-number">01</span>
+        <span class="special-emoji">🐙</span>
+        <p class="special-name">Hobotnica ispod peke</p>
+        <p class="special-desc">Hobotnica polako pečena ispod sača sa krompirima i aromatičnim začinima. Minimum 3 sata pripreme — naručite unaprijed.</p>
+        <p class="special-price">29 € / os</p>
+      </div>
+
+      <div class="special-card reveal">
+        <span class="special-number">02</span>
+        <span class="special-emoji">🐟</span>
+        <p class="special-name">Riba dana</p>
+        <p class="special-desc">Svježe ulovljena riba jutarnjeg ulova. Pitajte konobara za dostupnost — svaki dan nešto posebno s Jadrana.</p>
+        <p class="special-price">Po tržišnoj cijeni</p>
+      </div>
+
+      <div class="special-card reveal">
+        <span class="special-number">03</span>
+        <span class="special-emoji">🦞</span>
+        <p class="special-name">Jastog na buzaru</p>
+        <p class="special-desc">Svježi jadranski jastog u bogatom sosu od bijelog vina, rajčice i začinskog bilja. Gastronomsko iskustvo uz more.</p>
+        <p class="special-price">65 € / kg</p>
+      </div>
+
+      <div class="special-card reveal">
+        <span class="special-number">04</span>
+        <span class="special-emoji">🍷</span>
+        <p class="special-name">Degustacijski meni</p>
+        <p class="special-desc">5 hodova — od morskih predjela do dezerta. Uz preporučena crnogorska vina. Dostupno od 6 PM za rezervacije.</p>
+        <p class="special-price">55 € / os</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- O NAMA -->
+<section class="about-strip" id="o-nama">
+  <div class="container">
+    <div class="about-inner">
+      <div class="about-text reveal">
+        <span class="section-eyebrow">Naša priča</span>
+        <h2>Mediteran na <em>dlanu mora</em></h2>
+        <p>Mondo Kumbor je restoran s pogledom na Bokokotorski zaliv, smješten u mirnom Kumboru. Kuhamo ono što Jadran daje — svježu ribu, plodove mora i lokalne namirnice — bez kompromisa i bez prečica.</p>
+        <p>Naša kuhinja je kombinacija crnogorske tradicije i mediteranskih uticaja, servirana u opuštenom ambijentu uz zvuk talasa.</p>
+        <div class="about-stats">
+          <div class="stat">
+            <p class="stat-number">12+</p>
+            <p class="stat-label">Godina tradicije</p>
+          </div>
+          <div class="stat">
+            <p class="stat-number">100%</p>
+            <p class="stat-label">Lokalni dobavljači</p>
+          </div>
+          <div class="stat">
+            <p class="stat-number">40</p>
+            <p class="stat-label">Mjesta uz more</p>
+          </div>
+          <div class="stat">
+            <p class="stat-number">∞</p>
+            <p class="stat-label">Pogled na zaliv</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual reveal">
+        <div class="about-visual-box">
+          <p class="about-visual-text">Mare<br>et<br>Terra</p>
+        </div>
+        <div class="about-float-card">
+          <strong>Kumbor, 2012</strong>
+          <span>Osnovano uz Bokokotorski zaliv</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VINA -->
+<section id="vina">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Vinska karta</span>
+      <h2 class="section-title">Vina i <em>pića</em></h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="wines-grid">
+      <div class="wine-card reveal">
+        <span class="wine-icon">🍷</span>
+        <p class="wine-name">Vranac Pro Corde</p>
+        <p class="wine-origin">Plantaže · Crna Gora</p>
+        <p class="wine-desc">Snažno crnogorsko crno vino s notama tamnih šumskih plodova, začina i duga finišom. Savršeno uz janjetinu.</p>
+        <div class="wine-price-row">
+          <span class="wine-price">6 € / čaša</span>
+          <span class="wine-vol">0,75l · 28 €</span>
+        </div>
+      </div>
+
+      <div class="wine-card reveal">
+        <span class="wine-icon">🥂</span>
+        <p class="wine-name">Krstač</p>
+        <p class="wine-origin">Šipčanik · Crna Gora</p>
+        <p class="wine-desc">Autohtona crnogorska bijela sorta. Svježe, voćno, s mineralnim tonom — idealno uz morske plodove.</p>
+        <div class="wine-price-row">
+          <span class="wine-price">5 € / čaša</span>
+          <span class="wine-vol">0,75l · 24 €</span>
+        </div>
+      </div>
+
+      <div class="wine-card reveal">
+        <span class="wine-icon">🌊</span>
+        <p class="wine-name">Rosé od Vranac</p>
+        <p class="wine-origin">Crnogorsko primorje</p>
+        <p class="wine-desc">Svjež i voćan rosé od grožđa Vranac. Boje zalaska sunca, ukus Jadrana.</p>
+        <div class="wine-price-row">
+          <span class="wine-price">5 € / čaša</span>
+          <span class="wine-vol">0,75l · 22 €</span>
+        </div>
+      </div>
+
+      <div class="wine-card reveal">
+        <span class="wine-icon">🍺</span>
+        <p class="wine-name">Nikšićko pivo</p>
+        <p class="wine-origin">Nikšić · Crna Gora</p>
+        <p class="wine-desc">Domaće crnogorsko pivo. Osvježavajuće, blago gorčeno, idealno za ljetni dan uz more.</p>
+        <div class="wine-price-row">
+          <span class="wine-price">3 €</span>
+          <span class="wine-vol">0,5l</span>
+        </div>
+      </div>
+
+      <div class="wine-card reveal">
+        <span class="wine-icon">☕</span>
+        <p class="wine-name">Espresso</p>
+        <p class="wine-origin">Domaća pržionica</p>
+        <p class="wine-desc">Snažni espresso od pažljivo odabrane mješavine arabica zrna. Obavezno završiti ručak njime.</p>
+        <div class="wine-price-row">
+          <span class="wine-price">1,5 €</span>
+          <span class="wine-vol">Domaći</span>
+        </div>
+      </div>
+
+      <div class="wine-card reveal">
+        <span class="wine-icon">🍹</span>
+        <p class="wine-name">Domaća loza</p>
+        <p class="wine-origin">Crnogorska rakija</p>
+        <p class="wine-desc">Tradicionalna grožđana rakija iz domaće destilacije. Aperitiv ili digestiv — na vama je.</p>
+        <div class="wine-price-row">
+          <span class="wine-price">4 €</span>
+          <span class="wine-vol">50ml</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT / REZERVACIJA -->
+<section class="contact-bg" id="kontakt">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <h2>Rezervišite <em>vaš stol</em></h2>
+
+        <div class="contact-detail">
+          <p class="contact-label">Adresa</p>
+          <p class="contact-value">Kumbor bb<br>85340 Herceg Novi, Crna Gora</p>
+        </div>
+
+        <div class="contact-detail">
+          <p class="contact-label">Radno vrijeme</p>
+          <p class="contact-value">Pon – Ned: 08:00 – 00:00<br>Kuhinja: 10:00 – 23:00</p>
+        </div>
+
+        <div class="contact-detail">
+          <p class="contact-label">Kontakt</p>
+          <p class="contact-value">+382 31 123 456<br>info@mondokumbor.me</p>
+        </div>
+
+        <div class="contact-detail">
+          <p class="contact-label">Parking</p>
+          <p class="contact-value">Besplatan parking za goste.<br>Pristup brodom uz lokalni vez.</p>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <p class="contact-form-title">Rezervacija stola</p>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Ime i prezime</label>
+            <input type="text" placeholder="Vaše ime">
+          </div>
+          <div class="form-field">
+            <label>Telefon</label>
+            <input type="tel" placeholder="+382 ...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Datum</label>
+            <input type="date">
+          </div>
+          <div class="form-field">
+            <label>Vrijeme</label>
+            <input type="time" value="20:00">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Broj gostiju</label>
+          <select>
+            <option>1 osoba</option>
+            <option>2 osobe</option>
+            <option selected>3-4 osobe</option>
+            <option>5-6 osoba</option>
+            <option>7-10 osoba</option>
+            <option>10+ osoba (grupna)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Napomena (alergije, posebne želje...)</label>
+          <textarea placeholder="Recite nam nešto posebno..."></textarea>
+        </div>
+        <button class="btn-reserve" onclick="handleReservation()">Pošalji rezervaciju →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">Mondo <span>Kumbor</span></p>
+  <div class="footer-links">
+    <a href="#meni">Meni</a>
+    <a href="#specijali">Specijali</a>
+    <a href="#vina">Vina</a>
+    <a href="#o-nama">O nama</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+  <p class="footer-copy">© 2025 Mondo Kumbor · Kumbor, Herceg Novi · Sva prava zadržana</p>
+</footer>
+
+<script>
+  // NAV scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // Menu tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Reservation handler
+  function handleReservation() {
+    const btn = document.querySelector('.btn-reserve');
+    btn.textContent = '✓ Rezervacija primljena!';
+    btn.style.background = '#2A6B7C';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = 'Pošalji rezervaciju →';
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 3500);
+  }
+</script>
+</body>
+</html>
